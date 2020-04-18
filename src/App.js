@@ -3,21 +3,16 @@ import axios from 'axios';
 
 const App = () => {
   const [data, setData] = useState(null);
-  const onClick = () => {
-    axios
-      .get('https://jsonplaceholder.typicode.com/todos/1')
-      .then((response) => {
-        setData(response.data);
-      });
-  };
-  function replacer(key, value) {
-    console.log(typeof value);
-    if (key === 'completed') {
-      return undefined;
-      //   return 'A';
+  const onClick = async () => {
+    try {
+      const response = await axios.get(
+        'https://jsonplaceholder.typicode.com/todos/1',
+      );
+      setData(response.data);
+    } catch (e) {
+      console.log(e);
     }
-    return value;
-  }
+  };
   return (
     <div>
       <div>
@@ -26,7 +21,7 @@ const App = () => {
       {data && (
         <textarea
           rows={7}
-          value={JSON.stringify(data, replacer, 10)}
+          value={JSON.stringify(data, null, 2)}
           readOnly={true}
         />
       )}
