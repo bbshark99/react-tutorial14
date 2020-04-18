@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
+  // Run Single Job
   function increase(number, func) {
     setTimeout(() => {
       const result = number + 10;
@@ -16,6 +17,7 @@ function App() {
     console.log("increase: ", result);
   });
 
+  // run 4 jobs
   function job_thread(number, callback) {
     setTimeout(() => {
       const result = number + 10;
@@ -39,6 +41,46 @@ function App() {
       });
     });
   });
+
+  // Promise
+  function job_runner(number) {
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const result = number + 10;
+        if (result > 50) {
+          const e = new Error("NumberTooBig");
+          return reject(e);
+        }
+        resolve(result);
+      }, 1000);
+    });
+    return promise;
+  }
+
+  job_runner(0)
+    .then((number) => {
+      console.log("Job Runner1:", number);
+      return job_runner(number);
+    })
+    .then((number) => {
+      console.log("Job Runner2:", number);
+      return job_runner(number);
+    })
+    .then((number) => {
+      console.log("Job Runner3:", number);
+      return job_runner(number);
+    })
+    .then((number) => {
+      console.log("Job Runner4:", number);
+      return job_runner(number);
+    })
+    .then((number) => {
+      console.log("Job Runner5:", number);
+      return job_runner(number);
+    })
+    .catch((e) => {
+      console.log("Job Runner:Error:", e);
+    });
   return (
     <div className="App">
       <header className="App-header">
